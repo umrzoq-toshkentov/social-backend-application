@@ -5,6 +5,10 @@ MIGRATION_PATH = ./cmd/migrate/migrations
 run:
 	@go run ./cmd/api
 
+.PHONY: watch
+watch:
+	@$(shell go env GOPATH)/bin/air -c .air.toml
+
 .PHONY: migrate-create
 migrate-create:
 	@migrate create -seq -ext sql -dir $(MIGRATION_PATH) $(filter-out $@,$(MAKECMDGOALS))
