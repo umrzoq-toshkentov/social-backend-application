@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  # api:
+  #   build: ./cmd/api
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - db
+  #   environment:
+  #     - DB_ADDR=db:5432
+  #     - DB_MAX_OPEN_CONNS=10
+  #     - DB_MAX_IDLE_CONNS=5
+  #     - DB_MAX_IDLE_TIME=5m
+  #   command: ["./api", "-config", "/etc/social/config.yaml"]
+
+  db:
+    image: postgres:16.3
+    container_name: postgres-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=social
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+volumes:
+  db-data:
