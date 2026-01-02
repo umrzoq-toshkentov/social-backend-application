@@ -55,3 +55,46 @@ func (ps *PostStore) GetByID(ctx context.Context, postID int64) (*Post, error) {
 
 	return &post, nil
 }
+
+func (ps *PostStore) Delete(ctx context.Context, postID int64) error {
+	query := `
+		DELETE FROM posts
+		WHERE id = $1
+	`
+	res, err := ps.db.ExecContext(ctx, query, postID)
+	if err != nil {
+		return err
+	}
+
+	rows, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return ErrNotFound
+	}
+
+	return nil
+}
+
+func (ps *PostStore) Update(ctx context.Context, post *Post) error {
+	query := `
+		UPDATE posts
+		SET title = $1, content = $2, tags = $3, updated_at = NOW()
+		WHERE id = $4
+	`
+	res, err := ps.db.ExecContext(ctx, query, post.Title, post.Content, pq.Array(post.Tags), post.ID)
+	if err != nil {
+		return err
+	}
+
+	rows, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return ErrNotFound
+	}
+
+	return nil
+}
