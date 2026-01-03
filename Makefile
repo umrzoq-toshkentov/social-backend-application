@@ -20,3 +20,7 @@ migrate-up:
 .PHONY: migrate-down
 migrate-down:
 	@migrate -path=$(MIGRATION_PATH) -database=$(DATABASE_URL) down $(filter-out $@,$(MAKECMDGOALS))
+
+.PHONY: seed
+seed:
+	@go run ./cmd/migrate/seed/main.go
