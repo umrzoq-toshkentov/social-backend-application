@@ -9,8 +9,8 @@ run:
 watch:
 	@$(shell go env GOPATH)/bin/air -c .air.toml
 
-.PHONY: migrate-create
-migrate-create:
+.PHONY: migration
+migration:
 	@migrate create -seq -ext sql -dir $(MIGRATION_PATH) $(filter-out $@,$(MAKECMDGOALS))
 
 .PHONY: migrate-up
